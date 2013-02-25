@@ -1,0 +1,26 @@
+{
+  "name": "express-resizer",
+  "version": "0.0.0",
+  "description": "Resizes images on the fly",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": "",
+  "keywords": [
+    "images",
+    "assets",
+    "resize",
+    "gm"
+  ],
+  "author": "Thomas Peklak",
+  "license": "BSD",
+  "dependencies": {
+    "gm" : "1.8.x",
+    "mkdirp" : "0.3.x"
+  },
+  "devDependencies": {
+    "mocha" : "1.8.x",
+    "should" : "1.2.x"
+  }
+}
