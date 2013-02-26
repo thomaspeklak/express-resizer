@@ -1,9 +1,26 @@
 "use strict";
 
-var capitalize = require("./lib/upcase");
 var gm = require("gm");
-var Preset = function () {
-    if (!this instanceof Preset) throw "Preset must be invoked with new";
+var TaskQueue = require("./lib/task-queue");
+
+var Preset = function (name) {
+    return Object.create(Preset.prototype, {
+        name: {
+            writeable: true,
+            set: function (value) {
+                name = value;
+            },
+            get: function () {
+                return name || this.to;
+            },
+        },
+        tasks: {
+            value: []
+        },
+        queue: {
+            value: new TaskQueue()
+        }
+    });
 };
 
 Preset.prototype.from = function (from) {
@@ -35,16 +52,6 @@ Preset.prototype.thumb = function (options) {
     this.options = options;
 
     return this;
-};
-
-Preset.attachTo = function (app) {
-    app.get("/" + this.from + "/*", function (req, res) {
-
-    });
-
-    app.locals["image" + capitalize(to)] = function (src) {
-        return "@TODO";
-    };
 };
 
 module.exports = Preset;

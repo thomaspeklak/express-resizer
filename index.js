@@ -3,6 +3,7 @@
 var util = require("util");
 var EventEmitter = require("EventEmitter");
 var Preset = require("./preset");
+var capitalize = require("./lib/upcase");
 
 var express = require("express");
 
@@ -14,7 +15,21 @@ var Resizer = function () {
 Resizer.prototype.attach = function (preset) {
     if (!preset instanceof Preset) throw "Resizer expects a Preset";
 
-    preset.attachTo(this.app);
+    this.generateRoute(preset);
+
+
+};
+
+Resizer.prototype.generateRoute = function(preset) {
+    this.app.get("/" + preset.to + "/*", function (req, res) {
+
+    });
+};
+
+Resizer.prototype.addHelper = function (preset) {
+    this.app.locals["image" + capitalize(preset.name)] = function (src) {
+        return "@TODO";
+    };
 };
 
 util.inherits(Resizer, EventEmitter);
