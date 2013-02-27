@@ -24,7 +24,7 @@ Resizer.prototype.attach = function (preset) {
 };
 
 Resizer.prototype.generateRoute = function (preset) {
-    var processor = new Processor(preset);
+    var processor = new Processor(preset.tasks);
     this.app.get("/" + preset.target + "/*", function (req, res) {
         res.send(processor(req, res));
     });
