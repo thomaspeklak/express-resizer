@@ -5,7 +5,7 @@ var ProcessingQueue = require("./lib/task-queue");
 var Preset = function (name) {
     this.name = name;
     this.tasks = [];
-    this.targets = [];
+    this.targets = null;
     this.processingQueue = new ProcessingQueue();
 };
 
