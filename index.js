@@ -16,6 +16,7 @@ Resizer.prototype.attach = function (preset) {
     if (!preset instanceof Preset) throw "Resizer expects a Preset";
 
     this.generateRoute(preset);
+    this.addHelper(preset);
 
 
 };

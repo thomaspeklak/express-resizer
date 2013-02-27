@@ -14,12 +14,13 @@ Preset.prototype.from = function (from) {
     return this;
 };
 
-Preset.prototype.write = function (target) {
+Preset.prototype.to = function (target) {
     this.targets.push(target);
     this.tasks.push({
         type: "write",
         target: target
     });
+    Object.freeze(this);
 
     return this;
 };
