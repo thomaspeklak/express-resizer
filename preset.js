@@ -1,26 +1,12 @@
 "use strict";
 
-var gm = require("gm");
-var TaskQueue = require("./lib/task-queue");
+var ProcessingQueue = require("./lib/task-queue");
 
 var Preset = function (name) {
-    return Object.create(Preset.prototype, {
-        name: {
-            writeable: true,
-            set: function (value) {
-                name = value;
-            },
-            get: function () {
-                return name || this.to;
-            },
-        },
-        tasks: {
-            value: []
-        },
-        queue: {
-            value: new TaskQueue()
-        }
-    });
+    this.name = name;
+    this.tasks = [];
+    this.targets = [];
+    this.processingQueue = new ProcessingQueue();
 };
 
 Preset.prototype.from = function (from) {
@@ -28,28 +14,48 @@ Preset.prototype.from = function (from) {
     return this;
 };
 
-Preset.prototype.to = function (to) {
-    this.to = to;
+Preset.prototype.write = function (target) {
+    this.targets.push(target);
+    this.tasks.push({
+        type: "write",
+        target: target
+    });
+
     return this;
 };
 
 Preset.prototype.resize = function (options) {
-    this.method = "resize";
-    this.options = options;
+    this.tasks.push({
+        type: "resize",
+        options: options
+    });
 
     return this;
 };
 
 Preset.prototype.resizeAndCrop = function (options) {
-    this.method = "resize";
-    this.options = options;
+    this.tasks.push({
+        type: "resizeAndCrop",
+        options: options
+    });
 
     return this;
 };
 
 Preset.prototype.thumb = function (options) {
-    this.method = "thumb";
-    this.options = options;
+    this.tasks.push({
+        type: "thumb",
+        options: options
+    });
+
+    return this;
+};
+
+Preset.prototype.compress = function (options) {
+    this.tasks.push({
+        type: "crunch",
+        options: options
+    });
 
     return this;
 };
