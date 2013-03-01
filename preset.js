@@ -2,8 +2,8 @@
 
 var ProcessingQueue = require("./lib/task-queue");
 
-var Preset = function (name) {
-    this.name = name;
+var Preset = function (publicDir) {
+    this.publicDir = publicDir;
     this.tasks = [];
     this.targets = null;
     this.processingQueue = new ProcessingQueue();
@@ -62,4 +62,3 @@ Preset.prototype.compress = function (options) {
 };
 
 module.exports = Preset;
-

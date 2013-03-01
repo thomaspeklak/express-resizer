@@ -4,7 +4,7 @@ var util = require("util");
 var EventEmitter = require("EventEmitter");
 var Preset = require("./preset");
 var capitalize = require("./lib/upcase");
-var Processor = require("./lib/processor");
+var planTasks = require("./lib/plan-tasks");
 
 var express = require("express");
 
@@ -19,27 +19,21 @@ Resizer.prototype.attach = function (preset) {
 
     this.generateRoute(preset);
     this.addHelper(preset);
-
-
 };
 
 Resizer.prototype.generateRoute = function (preset) {
-    var processor = new Processor(preset.tasks);
+    var handleRequest = planTasks(preset);
     this.app.get("/" + preset.target + "/*", function (req, res) {
-        res.send(processor(req, res));
+        handleRequest(req, res);
     });
 };
 
 Resizer.prototype.addHelper = function (preset) {
     this.app.locals["image" + capitalize(preset.name)] = function (src) {
-        return src.replace(
-            preset.from,
-            preset.target,
-            src);
+        return src.replace(preset.from, preset.target, src);
     };
 };
 
 util.inherits(Resizer, EventEmitter);
 
 module.exports = Resizer;
-
