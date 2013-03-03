@@ -15,23 +15,24 @@ var Resizer = function () {
 
 util.inherits(Resizer, EventEmitter);
 
-Resizer.prototype.attach = function (name, preset) {
+Resizer.prototype.attach = function (preset) {
     if (!preset instanceof Preset) throw "Resizer expects a Preset";
     if (!preset.target) throw "Preset needs a target to write to";
 
     this.generateRoute(preset);
-    this.addHelper(name, preset);
+    this.addHelper(preset);
 };
 
 Resizer.prototype.generateRoute = function (preset) {
     var handleRequest = planTasks(preset);
-    this.app.get("/" + preset.target + "/*", function (req, res) {
+    this.app.get(preset.target + "/*", function (req, res) {
+        console.log("############REQUEST STARTED##########\n");
         handleRequest(req, res);
     });
 };
 
-Resizer.prototype.addHelper = function (name, preset) {
-    this.app.locals["image" + capitalize(name)] = function (src) {
+Resizer.prototype.addHelper = function (preset) {
+    this.app.locals["image" + capitalize(preset.name)] = function (src) {
         return src.replace(preset.from, preset.target, src);
     };
 };

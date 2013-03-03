@@ -2,11 +2,16 @@
 
 var ProcessingQueue = require("./lib/processing-queue");
 
-var Preset = function (publicDir) {
-    this.publicDir = publicDir;
+var Preset = function (name) {
+    this.name = name
     this.tasks = [];
     this.target = null;
     this.processingQueue = new ProcessingQueue();
+};
+
+Preset.prototype.publicDir = function (path) {
+    this.basePath = path;
+    return this;
 };
 
 Preset.prototype.from = function (from) {

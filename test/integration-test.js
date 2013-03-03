@@ -1,5 +1,6 @@
 "use strict";
 
+var request = require("supertest");
 var Resizer = require("../");
 var Preset = require("../preset");
 
@@ -10,14 +11,17 @@ describe("resizer", function () {
 
         app.use(express.static(__dirname + "/test-images"));
         var resizer = new Resizer();
-        resizer.attach("name", (new Preset(__dirname))
+        resizer.attach((new Preset("name"))
+                       .publicDir(__dirname)
                        .from("/test-images")
                        .resize({
                            width: 100,
                            height: 100
                        })
                        .to("/test-out-images"));
-        app.use(resizer);
-
+        app.use(resizer.app);
+        request(app)
+            .get("/test-out-images/profile.png")
+            .expect(200, done);
     });
 });
