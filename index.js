@@ -1,9 +1,9 @@
 "use strict";
 
 var util = require("util");
-var EventEmitter = require("EventEmitter");
+var EventEmitter = require("events").EventEmitter;
 var Preset = require("./preset");
-var capitalize = require("./lib/upcase");
+var capitalize = require("./lib/capitalize");
 var planTasks = require("./lib/plan-tasks");
 
 var express = require("express");
@@ -13,12 +13,14 @@ var Resizer = function () {
     this.app = express();
 };
 
-Resizer.prototype.attach = function (preset) {
+util.inherits(Resizer, EventEmitter);
+
+Resizer.prototype.attach = function (name, preset) {
     if (!preset instanceof Preset) throw "Resizer expects a Preset";
     if (!preset.target) throw "Preset needs a target to write to";
 
     this.generateRoute(preset);
-    this.addHelper(preset);
+    this.addHelper(name, preset);
 };
 
 Resizer.prototype.generateRoute = function (preset) {
@@ -28,12 +30,11 @@ Resizer.prototype.generateRoute = function (preset) {
     });
 };
 
-Resizer.prototype.addHelper = function (preset) {
-    this.app.locals["image" + capitalize(preset.name)] = function (src) {
+Resizer.prototype.addHelper = function (name, preset) {
+    this.app.locals["image" + capitalize(name)] = function (src) {
         return src.replace(preset.from, preset.target, src);
     };
 };
 
-util.inherits(Resizer, EventEmitter);
 
 module.exports = Resizer;

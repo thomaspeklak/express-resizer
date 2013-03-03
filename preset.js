@@ -1,11 +1,11 @@
 "use strict";
 
-var ProcessingQueue = require("./lib/task-queue");
+var ProcessingQueue = require("./lib/processing-queue");
 
 var Preset = function (publicDir) {
     this.publicDir = publicDir;
     this.tasks = [];
-    this.targets = null;
+    this.target = null;
     this.processingQueue = new ProcessingQueue();
 };
 
@@ -15,7 +15,7 @@ Preset.prototype.from = function (from) {
 };
 
 Preset.prototype.to = function (target) {
-    this.targets.push(target);
+    this.target = target;
     this.tasks.push({
         type: "write",
         target: target
