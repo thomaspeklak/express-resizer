@@ -3,7 +3,7 @@
 var ProcessingQueue = require("./lib/processing-queue");
 
 var Preset = function (name) {
-    this.name = name
+    this.name = name;
     this.tasks = [];
     this.target = null;
     this.processingQueue = new ProcessingQueue();
@@ -21,10 +21,6 @@ Preset.prototype.from = function (from) {
 
 Preset.prototype.to = function (target) {
     this.target = target;
-    this.tasks.push({
-        type: "write",
-        target: target
-    });
     Object.freeze(this);
 
     return this;

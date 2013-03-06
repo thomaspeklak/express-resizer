@@ -36,14 +36,14 @@ describe("resizer", function () {
             var file = __dirname + "/test-out-images/profile.png";
             gm(file).size(function (err, dimensions) {
                 if (err) {
-                    cleanup(file, function () {
+                    return cleanup(file, function () {
                         done(err);
                     });
                 }
 
                 dimensions.width.should.not.be.above(50);
                 dimensions.height.should.not.be.above(50);
-                cleanup(file, done);
+                fs.unlink(file, done);
             });
         };
 
@@ -60,6 +60,7 @@ describe("resizer", function () {
         })
             .to("/test-out-images"));
         app.use(resizer.app);
+
         request(app)
             .get("/test-out-images/profile.png")
             .expect(200, checkFile);
