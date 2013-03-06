@@ -26,7 +26,6 @@ Resizer.prototype.attach = function (preset) {
 Resizer.prototype.generateRoute = function (preset) {
     var handleRequest = planTasks(preset);
     this.app.get(preset.target + "/*", function (req, res) {
-        console.log("############REQUEST STARTED##########\n");
         handleRequest(req, res);
     });
 };
