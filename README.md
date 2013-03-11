@@ -1,4 +1,4 @@
-#Express Resizer
+#Express Resizer [![Build Status](https://travis-ci.org/thomaspeklak/express-resizer.png)](https://travis-ci.org/thomaspeklak/express-resizer.com/thomaspeklak/express-resizer.png)](https://gemnasium.com/thomaspeklak/express-resizer)
 
 Resizes images on the fly and stores them in a cache directory for later usage. You can define _presets_ that provide source and target directories and image manipulation functions. Express-Resizer is an Express app that can be mounted on an existing app.
 
