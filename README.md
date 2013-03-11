@@ -2,4 +2,4 @@
 
 __WIP__
 
-Resizes images on the fly.
+Resizes images on the fly and stores them in a cache directory for later usage.

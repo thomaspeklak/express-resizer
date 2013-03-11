@@ -119,4 +119,21 @@ describe("resizer", function () {
         .expect(200, cleanup(__dirname + "/test-out-images/profile.png", done));
     });
 
+    it("should provide a helper to link to resized images", function () {
+        var app = express();
+
+        app.use(express.static(__dirname + "/test-images"));
+        var resizer = new Resizer();
+        resizer.attach((new Preset("name"))
+            .publicDir(__dirname)
+            .from("/test-images")
+            .quality(80)
+            .to("/test-out-images"));
+
+        app.use(resizer.app);
+        app.locals.imageName.should.exist;
+        app.locals.imageName("/test-images/sub-dir/test.jpg").should.eql("/test-out-images/sub-dir/test.jpg");
+    });
+
+
 });
