@@ -65,4 +65,40 @@ describe("resizer", function () {
             .get("/test-out-images/profile.png")
             .expect(200, checkFile);
     });
+
+    it("should resize images to specified dimensions", function (done) {
+
+        var checkFile = function () {
+            var file = __dirname + "/test-out-images/profile.png";
+            gm(file).size(function (err, dimensions) {
+                if (err) {
+                    return cleanup(file, function () {
+                        done(err);
+                    });
+                }
+
+                dimensions.width.should.eql(50);
+                dimensions.height.should.eql(50);
+                fs.unlink(file, done);
+            });
+        };
+
+        var app = express();
+
+        app.use(express.static(__dirname + "/test-images"));
+        var resizer = new Resizer();
+        resizer.attach((new Preset("name"))
+            .publicDir(__dirname)
+            .from("/test-images")
+            .resizeAndCrop({
+            width: 50,
+            height: 50
+        })
+            .to("/test-out-images"));
+        app.use(resizer.app);
+
+        request(app)
+            .get("/test-out-images/profile.png")
+            .expect(200, checkFile);
+    });
 });
