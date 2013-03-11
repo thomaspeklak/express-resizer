@@ -44,10 +44,10 @@ Preset.prototype.resizeAndCrop = function (options) {
     return this;
 };
 
-Preset.prototype.thumb = function (options) {
+Preset.prototype.quality = function (value) {
     this.tasks.push({
-        type: "thumb",
-        options: options
+        type: "quality",
+        options: value
     });
 
     return this;

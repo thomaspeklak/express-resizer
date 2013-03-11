@@ -21,13 +21,13 @@ describe("resizer", function () {
         app.use(express.static(__dirname + "/test-images"));
         var resizer = new Resizer();
         resizer.attach((new Preset("name"))
-            .publicDir(__dirname)
-            .from("/test-images")
-            .to("/test-out-images"));
+        .publicDir(__dirname)
+        .from("/test-images")
+        .to("/test-out-images"));
         app.use(resizer.app);
         request(app)
-            .get("/test-out-images/profile.png")
-            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", done));
+        .get("/test-out-images/profile.png")
+        .expect(200, cleanup(__dirname + "/test-out-images/profile.png", done));
     });
 
     it("should resize images to specified dimensions", function (done) {
@@ -52,18 +52,18 @@ describe("resizer", function () {
         app.use(express.static(__dirname + "/test-images"));
         var resizer = new Resizer();
         resizer.attach((new Preset("name"))
-            .publicDir(__dirname)
-            .from("/test-images")
-            .resize({
+        .publicDir(__dirname)
+        .from("/test-images")
+        .resize({
             width: 50,
             height: 50
         })
-            .to("/test-out-images"));
+        .to("/test-out-images"));
         app.use(resizer.app);
 
         request(app)
-            .get("/test-out-images/profile.png")
-            .expect(200, checkFile);
+        .get("/test-out-images/profile.png")
+        .expect(200, checkFile);
     });
 
     it("should resize images to specified dimensions", function (done) {
@@ -88,17 +88,35 @@ describe("resizer", function () {
         app.use(express.static(__dirname + "/test-images"));
         var resizer = new Resizer();
         resizer.attach((new Preset("name"))
-            .publicDir(__dirname)
-            .from("/test-images")
-            .resizeAndCrop({
+        .publicDir(__dirname)
+        .from("/test-images")
+        .resizeAndCrop({
             width: 50,
             height: 50
         })
-            .to("/test-out-images"));
+        .to("/test-out-images"));
         app.use(resizer.app);
 
         request(app)
-            .get("/test-out-images/profile.png")
-            .expect(200, checkFile);
+        .get("/test-out-images/profile.png")
+        .expect(200, checkFile);
     });
+
+    it("should save images with degradeed quality", function (done) {
+        var app = express();
+
+        app.use(express.static(__dirname + "/test-images"));
+        var resizer = new Resizer();
+        resizer.attach((new Preset("name"))
+            .publicDir(__dirname)
+            .from("/test-images")
+            .quality(80)
+            .to("/test-out-images"));
+
+        app.use(resizer.app);
+        request(app)
+        .get("/test-out-images/profile.png")
+        .expect(200, cleanup(__dirname + "/test-out-images/profile.png", done));
+    });
+
 });
