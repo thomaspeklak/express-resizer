@@ -48,8 +48,8 @@ Then you attach some Presets to the Resizer:
 
 In your views you can generate a path to your presets with automatically generated helper functions that follow the scheme: PresetNamePath and PresetNameImage
 
-    img.thumb(src="#{squareThumbPath("test.jpg")}") // /thumbs/test.jpg
-    !#{squareThumbImage("test.jpg", "Thumb")        // <img src="/thumbs/test.jpg" alt="Thumb">
+    img.thumb(src="#{squareThumbPath("/uploads/test.jpg")}") // /thumbs/test.jpg
+    !#{squareThumbImage("/uploads/test.jpg", "Thumb")        // <img src="/thumbs/test.jpg" alt="Thumb">
 
-    img.preview(src="#{PreviewPath("test.jpg)}")    // /preview/test.jpg
-    !#{previewImage("test.jpg", "Preview")          // <img src="/preview/test.jpg" alt="Preview">
+    img.preview(src="#{PreviewPath("/uploads/test.jpg)}")    // /preview/test.jpg
+    !#{previewImage("/uploads/test.jpg", "Preview")          // <img src="/preview/test.jpg" alt="Preview">
