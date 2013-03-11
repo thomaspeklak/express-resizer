@@ -131,8 +131,10 @@ describe("resizer", function () {
             .to("/test-out-images"));
 
         app.use(resizer.app);
-        app.locals.imageName.should.exist;
-        app.locals.imageName("/test-images/sub-dir/test.jpg").should.eql("/test-out-images/sub-dir/test.jpg");
+        app.locals.namePath.should.exist;
+        app.locals.namePath("/test-images/sub-dir/test.jpg").should.eql("/test-out-images/sub-dir/test.jpg");
+        app.locals.nameImage.should.exist;
+        app.locals.nameImage("/test-images/test.jpg", "Alt Text").should.eql('<img src="/test-out-images/test.jpg” alt="Alt Text">');
     });
 
 

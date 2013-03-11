@@ -3,7 +3,7 @@
 var util = require("util");
 var EventEmitter = require("events").EventEmitter;
 var Preset = require("./preset");
-var capitalize = require("./lib/capitalize");
+var functionize = require("./lib/functionize");
 var planTasks = require("./lib/plan-tasks");
 
 var express = require("express");
@@ -38,8 +38,11 @@ Resizer.prototype.generateRoute = function (preset) {
 Resizer.prototype.addHelpers = function () {
     var self = this;
     this.presets.forEach(function (preset) {
-        self.app.parent.locals["image" + capitalize(preset.name)] = function (src) {
+        self.app.parent.locals[functionize(preset.name) + "Path"] = function (src) {
             return src.replace(preset.from, preset.target, src);
+        };
+        self.app.parent.locals[functionize(preset.name) + "Image"] = function (src, alt) {
+            return "<img src=\"" + src.replace(preset.from, preset.target, src) + "\” alt=\"" + alt + "\">";
         };
     });
 };
