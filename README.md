@@ -41,6 +41,33 @@ Then you attach some Presets to the Resizer:
         .quality(75)
         .to("/preview");
 
+###new(publicDir)
+
+Initialize a new Resizer object with a public directory.
+
+###attach(presetName)O
+
+Attaches a new preset to a resizer. A name is required, because this is used to generate view helpers.
+
+###from(sourceDirectory)
+
+Defines the directory where your source files are located relatively to the public directory.
+
+###to(targetDirectory)
+
+Defines the where the resized images should be stored relatively to the public directory.
+
+__Attention__: this freezes the preset object and should therefore be called as your last action.
+
+###resize(options)
+
+Scales the source image to fit __within__ the specified dimensions. Options can contain `width` and `height`. In most cases one side of the image will be smaller than the specified dimensions.
+
+###resizeAndCrop(options)
+
+Scales and crops the source image to fill the specified dimensions. Options can contain `width`, `height` and `gravity`. The dimensions of the image will be exactly the specified dimensions. Images are cropped from the center if you do not specify a `gravity`.
+
+`gravity` can be center, northwest, north, ....
 
 ##Views Helper
 
