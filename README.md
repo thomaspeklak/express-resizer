@@ -23,23 +23,23 @@ First you need to define a Resizer app that is the home for your presets.
     
 Then you attach some Presets to the Resizer:
   
-    myResizer.attach((new Preset("squareThumbs")
+    myResizer.attach("squareThumbs")
         .from("/uploads")
         .resizeAndCrop({
             width: 100,
             height: 100,
         })
         .quality(50)
-        .to("/thumbs"));
+        .to("/thumbs");
 
-    myResizer.attach((new Preset("preview")
+    myResizer.attach("preview")
         .from("/uploads")
         .resize({
             width: 600,
             height: 600,
         })
         .quality(75)
-        .to("/preview"));
+        .to("/preview");
 
 
 ##Views Helper

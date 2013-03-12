@@ -2,9 +2,9 @@
 
 var util = require("util");
 var EventEmitter = require("events").EventEmitter;
-var Preset = require("./preset");
 var functionize = require("./lib/functionize");
 var planTasks = require("./lib/plan-tasks");
+var Preset = require("./lib/preset");
 
 var express = require("express");
 
@@ -21,13 +21,19 @@ var Resizer = function (publicDir) {
 
 util.inherits(Resizer, EventEmitter);
 
-Resizer.prototype.attach = function (preset) {
-    if (!preset instanceof Preset) throw "Resizer expects a Preset";
-    if (!preset.target) throw "Preset needs a target to write to";
+Resizer.prototype.attach = function (name) {
+    var self = this;
+    var preset = new Preset(name);
+    preset.publicDir(this.publicDir);
 
-    preset.publicDir = preset.publicDir || this.publicDir;
-    this.generateRoute(preset);
-    this.presets.push(preset);
+    preset.once("done", function (preset) {
+        if (!preset.target) throw "Preset needs a target to write to";
+
+        self.generateRoute(preset);
+        self.presets.push(preset);
+    });
+
+    return preset;
 };
 
 Resizer.prototype.generateRoute = function (preset) {
