@@ -8,11 +8,12 @@ var planTasks = require("./lib/plan-tasks");
 
 var express = require("express");
 
-var Resizer = function () {
+var Resizer = function (publicDir) {
     if (!this instanceof Resizer) throw "Resizer must be invoked with new";
     var self = this;
     this.app = express();
     this.presets = [];
+    this.publicDir = publicDir;
     this.app.on("mount", function () {
         self.addHelpers();
     });
@@ -24,6 +25,7 @@ Resizer.prototype.attach = function (preset) {
     if (!preset instanceof Preset) throw "Resizer expects a Preset";
     if (!preset.target) throw "Preset needs a target to write to";
 
+    preset.publicDir = preset.publicDir || this.publicDir;
     this.generateRoute(preset);
     this.presets.push(preset);
 };

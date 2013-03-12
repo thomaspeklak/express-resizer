@@ -19,12 +19,11 @@ Working but not tested in production. API might change significantly.
 First you need to define a Resizer app that is the home for your presets.
 
     var Resizer = require("express-resizer");
-    var myResizer = new Resizer();
+    var myResizer = new Resizer(__dirname + "/public");
     
 Then you attach some Presets to the Resizer:
   
     myResizer.attach((new Preset("squareThumbs")
-        .publicDir(__dirname + "/public")
         .from("/uploads")
         .resizeAndCrop({
             width: 100,
@@ -34,7 +33,6 @@ Then you attach some Presets to the Resizer:
         .to("/thumbs"));
 
     myResizer.attach((new Preset("preview")
-        .publicDir(__dirname + "/public")
         .from("/uploads")
         .resize({
             width: 600,
