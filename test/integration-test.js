@@ -215,7 +215,7 @@ describe("resizer", function () {
         var count = 0;
         var cb = function () {
             if(count++ == 5) {
-                done();
+                fs.unlink(__dirname + "/test-out-images/profile.png", done);
             }
         };
 
@@ -228,27 +228,27 @@ describe("resizer", function () {
         app.use(express.static(__dirname + "/test-images"));
         request(app)
             .get("/test-out-images/profile.png")
-            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", cb));
+            .expect(200, cb);
 
         request(app)
             .get("/test-out-images/profile.png")
-            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", cb));
+            .expect(200, cb);
 
         request(app)
             .get("/test-out-images/profile.png")
-            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", cb));
+            .expect(200, cb);
 
         request(app)
             .get("/test-out-images/profile.png")
-            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", cb));
+            .expect(200, cb);
 
         request(app)
             .get("/test-out-images/profile.png")
-            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", cb));
+            .expect(200, cb);
 
         request(app)
             .get("/test-out-images/profile.png")
-            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", cb));
+            .expect(200, cb);
     });
 
     it("should return the correct mime type", function (done) {
@@ -264,7 +264,7 @@ describe("resizer", function () {
         request(app)
             .get("/test-out-images/profile.png")
             .expect("Content-type", "image/png")
-            .expect(200, done);
+            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", done));
     });
 
 });
