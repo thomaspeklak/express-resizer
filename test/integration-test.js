@@ -153,7 +153,6 @@ describe("resizer", function () {
     it("should provide a helper to link to resized images", function () {
         var app = express();
 
-        app.use(express.static(__dirname + "/test-images"));
         var resizer = new Resizer(__dirname);
         resizer.attach("name")
             .from("/test-images")
@@ -167,5 +166,35 @@ describe("resizer", function () {
         app.locals.nameImage("/test-images/test.jpg", "Alt Text").should.eql('<img src="/test-out-images/test.jpg” alt="Alt Text">');
     });
 
+    it("should provide an app method to clear a preset", function () {
+        var app = express();
+        var resizer = new Resizer(__dirname);
+        resizer.attach("name")
+            .from("/test-images")
+            .quality(80)
+            .to("/test-out-images");
 
+        app.use(resizer.app);
+        app.resizer.clearName.should.exist;
+        app.resizer.clearName();
+    });
+
+    it("should provide an app method to clear a file", function (done) {
+        var checkFile = function () {
+            var file = "/test-images/profile.png";
+            app.resizer.clear(file, done);
+        };
+        var app = express();
+        var resizer = new Resizer(__dirname);
+        resizer.attach("name")
+            .from("/test-images")
+            .quality(80)
+            .to("/test-out-images");
+
+        app.use(resizer.app);
+        app.resizer.clear.should.exist;
+        request(app)
+            .get("/test-out-images/profile.png")
+            .expect(200, checkFile);
+    });
 });

@@ -5,6 +5,7 @@ var EventEmitter = require("events").EventEmitter;
 var functionize = require("./lib/functionize");
 var planTasks = require("./lib/plan-tasks");
 var Preset = require("./lib/preset");
+var clear = require("./lib/clear");
 
 var express = require("express");
 
@@ -16,6 +17,7 @@ var Resizer = function (publicDir) {
     this.publicDir = publicDir;
     this.app.on("mount", function () {
         self.addHelpers();
+        self.addUpdateHelpers();
     });
 };
 
@@ -50,6 +52,22 @@ Resizer.prototype.addHelpers = function () {
             return "<img src=\"" + src.replace(preset.from, preset.target, src) + "\” alt=\"" + alt + "\">";
         };
     });
+};
+
+Resizer.prototype.addUpdateHelpers = function () {
+    var self = this;
+    if (self.app.parent.resizer) {
+        throw "Resizre can not add deletion und update helpers because resizer is already defined in app.";
+    }
+
+    self.app.parent.resizer = {};
+
+    this.presets.forEach(function (preset) {
+        self.app.parent.resizer["clear" + functionize(preset.name, true)] = function () {
+            clear.all(preset);
+        };
+    });
+    self.app.parent.resizer.clear = clear.file(this.presets);
 };
 
 
