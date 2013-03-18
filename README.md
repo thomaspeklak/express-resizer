@@ -41,6 +41,11 @@ Then you attach some Presets to the Resizer:
         .quality(75)
         .to("/preview");
 
+Then use it as a middleware in your app:
+
+    var app = express();
+    app.use(myResizer);
+
 ###new(publicDir)
 
 Initialize a new Resizer object with a public directory.
@@ -78,3 +83,53 @@ In your views you can generate a path to your presets with automatically generat
 
     img.preview(src="#{PreviewPath("/uploads/test.jpg)}")    // /preview/test.jpg
     !#{previewImage("/uploads/test.jpg", "Preview")          // <img src="/preview/test.jpg" alt="Preview">
+
+##CleanUp Caches
+
+You have two options to clean file caches:
+
+###Clear all files from a Preset
+
+    var Resizer = require("express-resizer");
+    var myResizer = new Resizer(__dirname + "/public");
+
+    //attach a preset
+    myResizer.attach("squareThumbs")
+        .from("/uploads")
+        .resizeAndCrop({
+            width: 100,
+            height: 100,
+        })
+        .quality(50)
+        .to("/thumbs");
+    
+    //use the middleware
+    var app = express();
+    app.use(myResizer);
+
+    //clear a preset
+    app.resizer.clearSquareThumb(function (err) {});
+
+Now all cached images in the thumbs folder or deleted.
+
+###Delete all image caches for a file
+
+    var Resizer = require("express-resizer");
+    var myResizer = new Resizer(__dirname + "/public");
+
+    //attach a preset
+    myResizer.attach("squareThumbs")
+        .from("/uploads")
+        .resizeAndCrop({
+            width: 100,
+            height: 100,
+        })
+        .quality(50)
+        .to("/thumbs");
+    
+    //use the middleware
+    var app = express();
+    app.use(myResizer);
+
+    //clear all file caches for test.png
+    app.resizer.clear("/uploads/subfolder/test.png", function (err) {});

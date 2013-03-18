@@ -63,9 +63,7 @@ Resizer.prototype.addUpdateHelpers = function () {
     self.app.parent.resizer = {};
 
     this.presets.forEach(function (preset) {
-        self.app.parent.resizer["clear" + functionize(preset.name, true)] = function () {
-            clear.all(preset);
-        };
+        self.app.parent.resizer["clear" + functionize(preset.name, true)] = clear.all(preset);
     });
     self.app.parent.resizer.clear = clear.file(this.presets);
 };

@@ -166,7 +166,7 @@ describe("resizer", function () {
         app.locals.nameImage("/test-images/test.jpg", "Alt Text").should.eql('<img src="/test-out-images/test.jpg” alt="Alt Text">');
     });
 
-    it("should provide an app method to clear a preset", function () {
+    it("should provide an app method to clear a preset", function (done) {
         var app = express();
         var resizer = new Resizer(__dirname);
         resizer.attach("name")
@@ -176,7 +176,19 @@ describe("resizer", function () {
 
         app.use(resizer.app);
         app.resizer.clearName.should.exist;
-        app.resizer.clearName();
+
+        var checkFile = function () {
+            app.resizer.clearName(function () {
+                var file = "/test-out-images/profile.png";
+                fs.exists(file, function (exists) {
+                    exists.should.be.false;
+                    done();
+                });
+            });
+        };
+        request(app)
+            .get("/test-out-images/profile.png")
+            .expect(200, checkFile);
     });
 
     it("should provide an app method to clear a file", function (done) {
