@@ -251,4 +251,20 @@ describe("resizer", function () {
             .expect(200, cleanup(__dirname + "/test-out-images/profile.png", cb));
     });
 
+    it("should return the correct mime type", function (done) {
+        var app = express();
+
+        var resizer = new Resizer();
+        resizer.attach("name")
+            .publicDir(__dirname)
+            .from("/test-images")
+            .to("/test-out-images");
+        app.use(resizer.app);
+        app.use(express.static(__dirname + "/test-images"));
+        request(app)
+            .get("/test-out-images/profile.png")
+            .expect("Content-type", "image/png")
+            .expect(200, done);
+    });
+
 });
