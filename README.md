@@ -4,9 +4,7 @@ Resizes images on the fly and stores them in a cache directory for later usage. 
 
 ##Status
 
-__WIP__
-
-Working but not tested in production. API might change significantly.
+Working but not tested in production. API might change.
 
 ##Installation
 
