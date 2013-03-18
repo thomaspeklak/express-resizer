@@ -209,4 +209,46 @@ describe("resizer", function () {
             .get("/test-out-images/profile.png")
             .expect(200, checkFile);
     });
+
+    it("should return images when requed in parallel", function (done) {
+        var app = express();
+        var count = 0;
+        var cb = function () {
+            if(count++ == 5) {
+                done();
+            }
+        };
+
+        var resizer = new Resizer();
+        resizer.attach("name")
+            .publicDir(__dirname)
+            .from("/test-images")
+            .to("/test-out-images");
+        app.use(resizer.app);
+        app.use(express.static(__dirname + "/test-images"));
+        request(app)
+            .get("/test-out-images/profile.png")
+            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", cb));
+
+        request(app)
+            .get("/test-out-images/profile.png")
+            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", cb));
+
+        request(app)
+            .get("/test-out-images/profile.png")
+            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", cb));
+
+        request(app)
+            .get("/test-out-images/profile.png")
+            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", cb));
+
+        request(app)
+            .get("/test-out-images/profile.png")
+            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", cb));
+
+        request(app)
+            .get("/test-out-images/profile.png")
+            .expect(200, cleanup(__dirname + "/test-out-images/profile.png", cb));
+    });
+
 });
