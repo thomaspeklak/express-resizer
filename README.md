@@ -74,6 +74,12 @@ Scales and crops the source image to fill the specified dimensions. Options can 
 
 `gravity` can be center, northwest, north, ....
 
+##Stale caches
+
+Resizer checks the modified date for a file and if the source is newer than
+the cached image will be regenerated. Therefore it's essential that the
+Resizer middleware is used before any static file server.
+
 ##Views Helper
 
 In your views you can generate a path to your presets with automatically generated helper functions that follow the scheme: PresetNamePath and PresetNameImage
