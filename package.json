@@ -1,6 +1,6 @@
 {
   "name": "express-resizer",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Resizes images on the fly",
   "main": "index.js",
   "scripts": {
@@ -16,14 +16,14 @@
   "author": "Thomas Peklak",
   "license": "BSD",
   "dependencies": {
-    "gm" : "1.8.x",
+    "gm" : ">1.8.0 <2.0.0",
     "mkdirp" : "0.3.x",
-    "express" : "3.1.x",
+    "express" : ">3.1.0 <3.3.0",
     "async" : "0.2.x",
     "mime" : "1.2.x"
   },
   "devDependencies": {
-    "mocha" : "1.8.x",
+    "mocha" : "1.9.x",
     "should" : "1.2.x",
     "supertest" : "*"
   }
