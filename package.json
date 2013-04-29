@@ -17,7 +17,7 @@
     "gm"
   ],
   "author": "Thomas Peklak",
-  "license": "BSD",
+  "license": "MIT",
   "dependencies": {
     "gm": ">1.8.0 <2.0.0",
     "mkdirp": "0.3.x",
