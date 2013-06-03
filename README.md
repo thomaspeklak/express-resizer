@@ -1,4 +1,6 @@
-#Express Resizer [![Dependency Status](https://gemnasium.com/thomaspeklak/express-resizer.png)](https://gemnasium.com/thomaspeklak/express-resizer)
+#Express Resizer 
+
+[![Dependency Status](https://gemnasium.com/thomaspeklak/express-resizer.png)](https://gemnasium.com/thomaspeklak/express-resizer) [![NPM version](https://badge.fury.io/js/express-resizer.png)](http://badge.fury.io/js/express-resizer)
 
 Resizes images on the fly and stores them in a cache directory for later usage. You can define _presets_ that provide source and target directories and image manipulation functions. Express-Resizer is an Express app that can be mounted on an existing app.
 
