@@ -1,6 +1,6 @@
 {
   "name": "express-resizer",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Resizes images on the fly",
   "main": "index.js",
   "scripts": {
