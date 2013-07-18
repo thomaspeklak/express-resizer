@@ -134,7 +134,7 @@ describe("resizer", function () {
             .expect(200, checkFile);
     });
 
-    it("should save images with degradeed quality", function (done) {
+    it("should save images with degraded quality", function (done) {
         var app = express();
 
         app.use(express.static(__dirname + "/test-images"));
@@ -159,55 +159,12 @@ describe("resizer", function () {
             .quality(80)
             .to("/test-out-images");
 
+        app.use(express.static(__dirname + "/test-images"));
         app.use(resizer.app);
         app.locals.namePath.should.exist;
         app.locals.namePath("/test-images/sub-dir/test.jpg").should.eql("/test-out-images/sub-dir/test.jpg");
         app.locals.nameImage.should.exist;
         app.locals.nameImage("/test-images/test.jpg", "Alt Text").should.eql('<img src="/test-out-images/test.jpg” alt="Alt Text">');
-    });
-
-    it("should provide an app method to clear a preset", function (done) {
-        var app = express();
-        var resizer = new Resizer(__dirname);
-        resizer.attach("name")
-            .from("/test-images")
-            .quality(80)
-            .to("/test-out-images");
-
-        app.use(resizer.app);
-        app.resizer.clearName.should.exist;
-
-        var checkFile = function () {
-            app.resizer.clearName(function () {
-                var file = "/test-out-images/profile.png";
-                fs.exists(file, function (exists) {
-                    exists.should.be.false;
-                    done();
-                });
-            });
-        };
-        request(app)
-            .get("/test-out-images/profile.png")
-            .expect(200, checkFile);
-    });
-
-    it("should provide an app method to clear a file", function (done) {
-        var checkFile = function () {
-            var file = "/test-images/profile.png";
-            app.resizer.clear(file, done);
-        };
-        var app = express();
-        var resizer = new Resizer(__dirname);
-        resizer.attach("name")
-            .from("/test-images")
-            .quality(80)
-            .to("/test-out-images");
-
-        app.use(resizer.app);
-        app.resizer.clear.should.exist;
-        request(app)
-            .get("/test-out-images/profile.png")
-            .expect(200, checkFile);
     });
 
     it("should return images when requed in parallel", function (done) {
@@ -267,4 +224,70 @@ describe("resizer", function () {
             .expect(200, cleanup(__dirname + "/test-out-images/profile.png", done));
     });
 
+    it("should provide an app method to clear a preset", function (done) {
+        var app = express();
+        var resizer = new Resizer(__dirname);
+        resizer.attach("name")
+            .from("/test-images")
+            .quality(80)
+            .to("/test-out-images");
+
+        app.use(express.static(__dirname + "/test-images"));
+        app.use(resizer.app);
+        app.resizer.clearName.should.exist;
+
+        var checkFile = function () {
+            app.resizer.clearName(function () {
+                var file = "/test-out-images/profile.png";
+                fs.exists(file, function (exists) {
+                    exists.should.be.false;
+                    done();
+                });
+            });
+        };
+        request(app)
+            .get("/test-out-images/profile.png")
+            .expect(200, checkFile);
+    });
+
+    it("should provide an app method to clear a file", function (done) {
+        var checkFile = function () {
+            var file = "/test-images/profile.png";
+            app.resizer.clear(file, function () {
+                var file = "/test-out-images/profile.png";
+                fs.exists(file, function (exists) {
+                    exists.should.be.false;
+                    done();
+                });
+            });
+        };
+        var app = express();
+        var resizer = new Resizer(__dirname);
+        resizer.attach("name")
+            .from("/test-images")
+            .quality(80)
+            .to("/test-out-images");
+
+        app.use(express.static(__dirname));
+        app.use(resizer.app);
+        app.resizer.clear.should.exist;
+        request(app)
+            .get("/test-out-images/profile.png")
+            .expect(200, checkFile);
+    });
+
+    it("should return a 404 if file not present", function (done) {
+        var app = express();
+
+        var resizer = new Resizer();
+        resizer.attach("name")
+            .publicDir(__dirname)
+            .from("/test-images")
+            .to("/test-out-images");
+        app.use(resizer.app);
+        app.use(express.static(__dirname + "/test-images"));
+        request(app)
+            .get("/test-out-images/non-existent.png")
+            .expect(404, done);
+    });
 });
